@@ -1,5 +1,7 @@
+import html
 import json
 import os
+import re
 from pathlib import Path
 
 import feedparser
@@ -33,15 +35,29 @@ def save_published(published):
     )
 
 
+def clean_text(text):
+    text = html.unescape(text or "")
+    text = re.sub(r"<[^>]+>", "", text)
+    text = re.sub(r"\s+", " ", text)
+    return text.strip()
+
+
 def make_post(entry):
-    title = entry.get("title", "Новая новость")
-    summary = entry.get("summary", "").strip()
+    title = clean_text(entry.get("title", "Новая новость"))
+    summary = clean_text(entry.get("summary", ""))
     link = entry.get("link", "")
 
-    summary = summary.replace("<p>", "").replace("</p>", "")
-    summary = summary[:600]
+    if len(summary) > 500:
+        summary = summary[:500].rsplit(" ", 1)[0] + "…"
 
-    return f"🤖 {title}\n\n{summary}\n\nИсточник: {link}"
+    if not summary:
+        summary = "Появилась новая новость в мире искусственного интеллекта и технологий."
+
+    return (
+        f"🤖 {title}\n\n"
+        f"{summary}\n\n"
+        f"🔗 Источник:\n{link}"
+    )
 
 
 def send_to_telegram(text):
