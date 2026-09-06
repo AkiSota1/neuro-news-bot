@@ -9,9 +9,11 @@ import requests
 
 
 RSS_FEEDS = [
-    "https://techcrunch.com/category/artificial-intelligence/feed/",
-    "https://www.theverge.com/rss/ai-artificial-intelligence/index.xml",
-    "https://www.artificialintelligence-news.com/feed/",
+    "https://habr.com/ru/rss/hubs/artificial_intelligence/articles/?fl=ru",
+    "https://habr.com/ru/rss/hubs/machine_learning/articles/?fl=ru",
+    "https://habr.com/ru/rss/hubs/natural_language_processing/articles/?fl=ru",
+    "https://www.cnews.ru/inc/rss/news.xml",
+    "https://3dnews.ru/breaking/rss",
 ]
 
 STATE_FILE = Path("published.json")
